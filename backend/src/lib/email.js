@@ -2,9 +2,6 @@ import nodemailer from "nodemailer";
 
 // Create transporter
 const createTransporter = () => {
-  // For development: Use Gmail or a test service like Ethereal
-  
-  // Gmail (for testing)
   return nodemailer.createTransport({
     service: 'gmail',
     auth: {

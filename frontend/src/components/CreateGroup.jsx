@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { X, Users, Camera } from "lucide-react";
 import { useChatStore } from "../store/useChatStore";
-import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
 
 const CreateGroup = ({ isOpen, onClose }) => {
-  const { users } = useChatStore();
-  const actualUsers = users.filter(item => item.type === "user");
+  const { users, createGroup } = useChatStore();
+  const actualUsers = users;
   const [groupName, setGroupName] = useState("");
   const [selectedMembers, setSelectedMembers] = useState([]);
   const [groupImage, setGroupImage] = useState(null);
@@ -50,16 +49,12 @@ const CreateGroup = ({ isOpen, onClose }) => {
 
     setLoading(true);
     try {
-      await axiosInstance.post("/groups", {
+      await createGroup({
         Name: groupName.trim(),
         members: selectedMembers,
         profilePic: groupImage,
         description: description.trim(),
       });
-
-      toast.success("Group created successfully!");
-      const { getUsers } = useChatStore.getState();
-      getUsers();
       
       onClose();
       resetForm();
@@ -81,7 +76,7 @@ const CreateGroup = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-base-100 rounded-lg w-full max-w-md max-h-[90vh] overflow-y-auto">
+      <div className="bg-base-200 rounded-lg w-full max-w-md max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-base-300">
           <h2 className="text-lg font-semibold flex items-center gap-2">
@@ -108,11 +103,11 @@ const CreateGroup = ({ isOpen, onClose }) => {
             >
                 <Camera className="w-4 h-4 text-base-200" />
                 <input
-                type="file"
-                id="group-avatar-upload"
-                className="hidden"
-                accept="image/*"
-                onChange={handleImageChange}
+                  type="file"
+                  id="group-avatar-upload"
+                  className="hidden"
+                  accept="image/*"
+                  onChange={handleImageChange}
                 />
             </label>
             </div>
@@ -126,7 +121,7 @@ const CreateGroup = ({ isOpen, onClose }) => {
             <input
               type="text "
               placeholder="Enter group name"
-              className="input bg-base-200 rounded-lg border-white text-white w-full"
+              className="input bg-base-100 rounded-lg border-white text-white w-full"
               value={groupName}
               onChange={(e) => setGroupName(e.target.value)}
             />
@@ -139,7 +134,7 @@ const CreateGroup = ({ isOpen, onClose }) => {
             </label>
             <textarea
               placeholder="Group description (optional)"
-              className="textarea bg-base-200 rounded-lg border-white text-white w-full h-20 resize-none"
+              className="textarea bg-base-100 rounded-lg border-white text-white w-full h-20 resize-none"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
@@ -155,7 +150,7 @@ const CreateGroup = ({ isOpen, onClose }) => {
                 <label key={user._id} className="flex items-center gap-3 p-3 hover:bg-base-200 cursor-pointer">
                   <input
                     type="checkbox"
-                    className="checkbox checkbox-sm bg-base-200 border-white"
+                    className="checkbox checkbox-sm bg-base-100 border-white"
                     checked={selectedMembers.includes(user._id)}
                     onChange={() => toggleMember(user._id)}
                   />
@@ -191,7 +186,7 @@ const CreateGroup = ({ isOpen, onClose }) => {
             >
               {loading ? (
                 <>
-                  <span className="loading loading-spinner loading-sm"></span>
+                  <span className="loading loading-spinner loading-sm"></span>{' '}
                   Creating...
                 </>
               ) : (

@@ -21,7 +21,6 @@ const Reset = () => {
   const handleResetPassword = async () => {
     setError('');
 
-    // Validate email
     if (!resetEmail) {
       setError('Please enter your email address');
       return;
@@ -135,26 +134,24 @@ const Reset = () => {
                 </div>
               </>
             ) : (
-              <>
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-success/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Shield className="text-success" size={32} />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2">Check your email</h3>
-                  <p className="text-base-content/70 mb-4">
-                    We've sent a password reset link to <strong>{resetEmail}</strong>
-                  </p>
-                  <p className="text-sm text-base-content/60 mb-4">
-                    The link will expire in 1 hour. If you don't see the email, check your spam folder.
-                  </p>
-                  <button
-                    onClick={closeModal}
-                    className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90"
-                  >
-                    OK
-                  </button>
+              <div className="text-center">
+                <div className="w-16 h-16 bg-success/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Shield className="text-success" size={32} />
                 </div>
-              </>
+                <h3 className="text-xl font-semibold mb-2">Check your email</h3>
+                <p className="text-base-content/70 mb-4">
+                  We've sent a password reset link to <strong>{resetEmail}</strong>
+                </p>
+                <p className="text-sm text-base-content/60 mb-4">
+                  The link will expire in 1 hour. If you don't see the email, check your spam folder.
+                </p>
+                <button
+                  onClick={closeModal}
+                  className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90"
+                >
+                  OK
+                </button>
+              </div>
             )}
           </div>
         </div>
@@ -181,7 +178,7 @@ const LoginPage = () => {
       {/* left side */}
       <div className="flex flex-col justify-center items-center p-6 sm:p-12">
         <div className="w-full max-w-md space-y-8">
-          {/* LOGO */}
+          {/* Logo */}
           <div className="text-center mb-8">
             <div className="flex flex-col items-center gap-2 group">
               <div className="size-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">

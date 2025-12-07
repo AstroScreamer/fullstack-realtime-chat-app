@@ -15,7 +15,7 @@ const DeleteAccountSection = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [step, setStep] = useState(1); // 1: warning, 2: confirmation
+  const [step, setStep] = useState(1);
 
   const handleDeleteAccount = async () => {
     if (confirmationText !== 'DELETE ACCOUNT' || !password) {
@@ -241,7 +241,6 @@ const ChangePasswordSection = () => {
     setError('');
     setSuccess('');
     
-    // frontend validation
     if (formData.newPassword !== formData.confirmPassword) {
       setError('New passwords do not match');
       setIsLoading(false);
@@ -254,7 +253,6 @@ const ChangePasswordSection = () => {
       return;
     }
 
-    // Check if new password is same as current
     if (formData.currentPassword === formData.newPassword) {
       setError('New password must be different from current password');
       setIsLoading(false);

@@ -21,7 +21,12 @@ const groupSchema = new mongoose.Schema({
   description: {
     type: String,
     default: ""
-  }
+  },
+  unreadCounts: { 
+    type: Map,
+    of: Number,
+    default: {}
+  },
 }, { timestamps: true });
 
 const Group = mongoose.model("Group", groupSchema);

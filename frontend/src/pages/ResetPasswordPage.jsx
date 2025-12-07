@@ -26,7 +26,7 @@ const ResetPasswordPage = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
-            token, // Reset token from URL
+            token,
             newPassword: formData.newPassword 
         })
       });

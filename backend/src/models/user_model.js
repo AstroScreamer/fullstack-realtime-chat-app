@@ -32,7 +32,12 @@ const userSchema = new mongoose.Schema(
         resetPasswordExpires: {
             type: Date,
             default: undefined
-        } 
+        },
+        unreadCounts: { 
+            type: Map,
+            of: Number,
+            default: {}
+        }, 
     },
     { timestamps: true }
 );

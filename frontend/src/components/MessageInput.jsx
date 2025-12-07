@@ -1,43 +1,89 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useChatStore } from '../store/useChatStore';
 import { useAuthStore } from "../store/useAuthStore";
 import { Image, Send, X } from 'lucide-react';
 import toast from 'react-hot-toast';
 
-
 const MessageInput = () => {
-  const [ text, setText ] = useState('');
-  const [ imagePreview, setImagePreview ] = useState(null);
+  const [text, setText] = useState('');
+  const [imagePreview, setImagePreview] = useState(null);
   const fileInputRef = useRef(null);
-  const { sendMessage, selectedChat } = useChatStore();
+  const { sendMessage, selectedChat, setDraft, getDraft, clearDraft } = useChatStore();
   const { socket } = useAuthStore();
-  const [typingTimeout, setTypingTimeout] = useState(null);
+  const typingTimeoutRef = useRef(null);
+  const lastTypingTime = useRef(0); 
 
-  // Handle image select
+  useEffect(() => {
+    if (selectedChat?._id) {
+      const savedDraft = getDraft(selectedChat._id);
+      setText(savedDraft);
+    }
+    setImagePreview(null);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+    
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+      typingTimeoutRef.current = null;
+    }
+  }, [selectedChat?._id, getDraft]);
+
+  useEffect(() => {
+    if (selectedChat?._id) {
+      setDraft(selectedChat._id, text);
+    }
+  }, [text, selectedChat?._id, setDraft]);
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    if(!file.type.startsWith('image/')) {
+    if (!file?.type.startsWith('image/')) {
       toast.error('Please select an image file');
       return;
     }
-    
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setImagePreview(reader.result);
-    }
-    reader.readAsDataURL(file);
-  }
 
-  // Remove selected image
+    const reader = new FileReader();
+    reader.onloadend = () => setImagePreview(reader.result);
+    reader.readAsDataURL(file);
+  };
+
   const removeImage = () => {
     setImagePreview(null);
     if (fileInputRef.current) fileInputRef.current.value = '';
-  }
+  };
 
-  // Send message
-  const handleSendMessage = async(e) => {
+  const handleTyping = () => {
+    if (!socket || !selectedChat) return;
+    
+    const now = Date.now();
+    if (now - lastTypingTime.current > 2000) {
+      if (selectedChat.type === "group") {
+        socket.emit("groupTyping", { groupId: selectedChat._id });
+      } else {
+        socket.emit("typing", { receiverId: selectedChat._id });
+      }
+      lastTypingTime.current = now;
+    }
+
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+    }
+
+    typingTimeoutRef.current = setTimeout(() => {
+      if (selectedChat.type === "group") {
+        socket.emit("groupStopTyping", { groupId: selectedChat._id });
+      } else {
+        socket.emit("stopTyping", { receiverId: selectedChat._id });
+      }
+    }, 3000);
+  };
+
+  const handleTextChange = (e) => {
+    setText(e.target.value);
+    handleTyping();
+  };
+
+  const handleSendMessage = async (e) => {
     e.preventDefault();
-    if(!text.trim() && !imagePreview) return;
+    if (!text.trim() && !imagePreview) return;
 
     try {
       await sendMessage({
@@ -45,35 +91,25 @@ const MessageInput = () => {
         image: imagePreview,
       });
 
-      // clear form
-      setText("");
+      setText('');
+      clearDraft(selectedChat._id);
       setImagePreview(null);
       if (fileInputRef.current) fileInputRef.current.value = '';
 
-      // stop typing emit (1v1 only)
-      if (socket && selectedChat?.type !== 'group') {
-        socket.emit("stopTyping", { receiverId: selectedChat._id }); // stop typing on send
+      if (typingTimeoutRef.current) {
+        clearTimeout(typingTimeoutRef.current);
+        typingTimeoutRef.current = null;
+      }
+
+      if (socket && selectedChat) {
+        if (selectedChat.type === "group") {
+          socket.emit("groupStopTyping", { groupId: selectedChat._id });
+        } else {
+          socket.emit("stopTyping", { receiverId: selectedChat._id });
+        }
       }
     } catch (error) {
-      console.error("Failed to send message:", error);
-    }
-  }
-
-  // typing indicator handler (on input change)
-  const handleTyping = (value) => {
-    setText(value);
-
-    // only for 1v1 chats
-    if (socket && selectedChat?.type !== 'group') {
-      socket.emit('typing', { receiverId: selectedChat._id });
-
-      if (typingTimeout) clearTimeout(typingTimeout);
-
-      setTypingTimeout(
-        setTimeout(() => {
-          socket.emit('stopTyping', { receiverId: selectedChat._id });
-        }, 1000)
-      );
+      console.error('Failed to send message:', error);
     }
   };
 
@@ -100,7 +136,7 @@ const MessageInput = () => {
         </div>
       )}
 
-      <form onSubmit={handleSendMessage} className='flex items-cneter gap-2'>
+      <form onSubmit={handleSendMessage} className='flex items-center gap-2'>
         <div className='flex-1 flex gap-2'>
           {/* Text input */}
           <input
@@ -108,8 +144,7 @@ const MessageInput = () => {
             className='w-full input input-bordered rounded-lg input-sm sm:input-md'
             placeholder='Type a message...'
             value={text}
-            onChange={(e) =>  
-              handleTyping(e.target.value)}
+            onChange={handleTextChange}
           />
 
           {/* File input */}
@@ -139,7 +174,6 @@ const MessageInput = () => {
         >
           <Send size={22} />
         </button>
-
       </form>
     </div>
   );
