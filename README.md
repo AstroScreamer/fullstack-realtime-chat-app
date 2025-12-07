@@ -13,11 +13,13 @@ This is a full-stack real-time chat application built with the MERN stack (Mongo
 
 ## Screenshots
 
-| Login Page | Chat Page | Settings Page | Profile Page
+| Login Page | Chat Page
 | :---: | :---: | :---: | :---: |
-| <img src="frontend/src/assets/Login_page.png" alt="Login Page" width="300"/> | <img src="frontend/src/assets/Chat_page.png" alt="Chat Page" width="300"/> | <video width="320" height="240" controls>
-  <source src="frontend/src/assets/Settings_page.mp4" type="video/mp4"> </video> | <video width="320" height="240" controls>
-  <source src="frontend/src/assets/Profile_page.mp4" type="video/mp4"> </video> |
+| <img src="frontend/src/assets/Login_page.png" alt="Login Page" width="300"/> | <img src="frontend/src/assets/Chat_page.png" alt="Chat Page" width="300"/> | 
+
+| Settings Page | Profile Page 
+| :---: | :---: |
+| <video width="320" height="240" controls> <source src="frontend/src/assets/Settings_page.mp4" type="video/mp4"> </video> | <video width="320" height="240" controls> <source src="frontend/src/assets/Profile_page.mp4" type="video/mp4"> </video> |
 
 ## Technologies Used
 
