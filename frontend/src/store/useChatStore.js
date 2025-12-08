@@ -521,7 +521,6 @@ export const useChatStore = create((set, get) => ({
         socket.on("newGroup", (newGroup) => {
     
             set((state) => {
-                // Check if group already exists (admin already added it locally)
                 const exists = state.groups.some(g => g._id === newGroup._id);
                 
                 if (exists) {

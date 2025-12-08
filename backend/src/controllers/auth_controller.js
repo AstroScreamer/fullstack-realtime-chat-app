@@ -266,7 +266,6 @@ export const requestPasswordReset = async (req, res) => {
       });
     }
 
-    // Find user by email
     const user = await User.findOne({ email: email.toLowerCase() });
     
     if (!user) {
@@ -289,7 +288,6 @@ export const requestPasswordReset = async (req, res) => {
 
     const resetUrl = `http://localhost:5173/reset-password/${resetToken}`;
 
-    // Send email
     try {
       await sendResetPasswordEmail(user.email, resetUrl, user.fullName);
       console.log('Reset email sent successfully to:', email);

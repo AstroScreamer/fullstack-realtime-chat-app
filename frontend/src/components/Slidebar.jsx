@@ -144,7 +144,6 @@ const Slidebar = () => {
                   />
                 )}
 
-                {/* Unread badge - ONLY on small/medium screens (at top-right of avatar) */}
                 {unreadCount > 0 && (
                   <span
                     className="lg:hidden absolute -top-1 -right-1 bg-red-500 text-white text-xs font-semibold 
@@ -155,14 +154,12 @@ const Slidebar = () => {
                 )}
               </div>
 
-              {/* Chat Info - visible on large screens */}
               <div className="hidden lg:flex items-center gap-2 text-left min-w-0 flex-1">
                 <div className="flex-1 min-w-0">
                   <div className="font-medium truncate">{displayChat.Name}</div>
                   <div className="text-sm text-zinc-400 truncate">{statusText}</div>
                 </div>
                 
-                {/* Unread badge - ONLY on large screens (next to name) */}
                 {unreadCount > 0 && (
                   <span
                     className="bg-red-500 text-white text-xs font-semibold 

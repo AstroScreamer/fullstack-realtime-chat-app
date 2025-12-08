@@ -27,7 +27,6 @@ const ChatContainer = () => {
 
   const [showScrollButton, setShowScrollButton] = useState(false);
 
-  // Fetch + subscribe messages whenever chat changes
   useEffect(() => {
     if (!selectedChat?._id) return;
 
@@ -44,7 +43,6 @@ const ChatContainer = () => {
     }
   }, [selectedChat?._id, selectedChat?.type, getMessages, socket]);
 
-  // Mark unseen messages as seen (1v1 only)
   useEffect(() => {
     if (!selectedChat || selectedChat.type === "group" || isMessagesLoading)
       return;
@@ -77,7 +75,6 @@ const ChatContainer = () => {
     });
   }, [messages, selectedChat, authUser._id, isMessagesLoading]);
 
-  // scroll to bottom
   const scrollToBottom = (smooth = true) => {
     const el = messagesContainerRef.current;
     if (!el) return;
@@ -87,12 +84,10 @@ const ChatContainer = () => {
     });
   };
 
-  // Always go to bottom on new messages
   useEffect(() => {
     scrollToBottom(false);
   }, [messages]);
 
-  // Track scroll position to show/hide arrow button
   useEffect(() => {
     const el = messagesContainerRef.current;
     if (!el) return;
@@ -147,7 +142,6 @@ const ChatContainer = () => {
           const isGroup = selectedChat?.type === "group";
           const nameColor = getUserColor(sender._id);
 
-          // ---- Date separator logic ----
           const currentDate = formatChatDate(message.createdAt);
           let showDateSeparator = false;
 
@@ -186,7 +180,6 @@ const ChatContainer = () => {
                   </div>
                 </div>
 
-                {/* For 1v1 you only showed time in header; keep that */}
                 {!isGroup && (
                   <div className="chat-header mb-1 flex items-center gap-1">
                     <time className="text-xs opacity-50 ml-1">
@@ -238,7 +231,6 @@ const ChatContainer = () => {
         <div ref={messageEndRef} />
       </div>
 
-      {/* Floating "scroll to bottom" button */}
       {showScrollButton && (
         <button
           onClick={() => scrollToBottom(true)}

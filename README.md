@@ -74,7 +74,7 @@ This is a full-stack real-time chat application built with the MERN stack (Mongo
 
 1.  **Clone the repository:**
     ```
-    git clone https://github.com/your-username/realtime-chat-app.git
+    git clone https://github.com/AstroScreamer/fullstack-realtime-chat-app.git
     ```
 2.  **Install backend dependencies:**
     ```
@@ -112,7 +112,7 @@ This is a full-stack real-time chat application built with the MERN stack (Mongo
 
 ## Usage
 
-Once the application is running, you can open your browser and navigate to `http://localhost:3000` to use the application. You can create an account, log in, and start chatting with other users.
+Once the application is running, you can open your browser and navigate to `http://localhost:5173` to use the application. You can create an account, log in, and start chatting with other users. You can see backend logs or apis at `http://localhost:5001`.
 
 ## API Endpoints
 

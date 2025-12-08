@@ -270,7 +270,6 @@ const GroupSettings = ({ group, onClose }) => {
                     </div>
                   </div>
 
-                  {/* Show remove button only in edit mode, not for admin */}
                   {editing && isAdmin() && !isUserAdmin(member._id) && (
                     <button
                       onClick={() => handlePendingRemoveMember(member._id)}
@@ -285,7 +284,6 @@ const GroupSettings = ({ group, onClose }) => {
           </div>
         </div>
 
-        {/* Add Members Section - Only show in edit mode */}
         {editing && isAdmin() && (
           <div>
             <h4 className="font-semibold mb-2 flex items-center gap-2">

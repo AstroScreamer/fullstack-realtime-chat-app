@@ -111,27 +111,18 @@ export const useAuthStore = create((set, get) => ({
         socket.connect();
         set({ socket });
 
-        // ✅ FIXED: Subscribe to messages once when socket connects
-        // Remove old listeners first, then add new ones
         socket.on("connect", () => {
-            console.log("Socket connected:", socket.id);
-            
-            // CRITICAL: Unsubscribe first to prevent duplicates
             useChatStore.getState().unsubscribeFromMessages();
             
-            // Now subscribe with fresh listeners
             useChatStore.getState().subscribeToMessages();
         });
 
-        // 🟢 Handle online users list
         socket.on("getOnlineUsers", (userIds) => {
             set({ onlineUsers: userIds });
         });
 
-        // 🧹 Handle socket disconnection cleanup
         socket.on("disconnect", () => {
             console.log("Socket disconnected");
-            // Clean up listeners when socket disconnects
             useChatStore.getState().unsubscribeFromMessages();
         });
     },
@@ -140,7 +131,6 @@ export const useAuthStore = create((set, get) => ({
     disconnectSocket: () => {
         const socket = get().socket;
         if (socket?.connected) {
-            // Unsubscribe before disconnecting
             useChatStore.getState().unsubscribeFromMessages();
             socket.disconnect();
         }
