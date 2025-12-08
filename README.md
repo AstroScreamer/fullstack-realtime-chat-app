@@ -17,11 +17,11 @@ This is a full-stack real-time chat application built with the MERN stack (Mongo
 
 | Login Page | Chat Page |
 | :---: | :---: |
-| ![Login Page](frontend/src/assets/Login_page.png) | ![Chat Page](frontend/src/assets/Chat_page.png) |
+| ![Login Page](frontend/public/Login_page.png) | ![Chat Page](frontend/public/Chat_page.png) |
 
 | Settings Page | Profile Page |
 | :---: | :---: |
-| ![Settings Page](frontend/src/assets/Settings_page.gif) | ![Profile Page](frontend/src/assets/Profile_page.gif) |
+| ![Settings Page](frontend/public/Settings_page.gif) | ![Profile Page](frontend/public/Profile_page.gif) |
 
 ## Technologies Used
 
@@ -60,8 +60,8 @@ This is a full-stack real-time chat application built with the MERN stack (Mongo
 │   │   └── routes
 │   └── package.json
 └── frontend
+    ├── public
     ├── src
-    │   ├── assets
     │   ├── components
     │   ├── constants
     │   ├── lib
